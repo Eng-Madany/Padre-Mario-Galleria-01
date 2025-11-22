@@ -1,0 +1,619 @@
+<!DOCTYPE html>
+
+<html lang="it">
+
+<head>
+
+<meta charset="UTF-8">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Padre Mario - Passi d'Autunno</title>
+
+
+<!-- Tailwind CSS -->
+
+<script src="https://cdn.tailwindcss.com"></script>
+
+
+<!-- Icons -->
+
+<script src="https://unpkg.com/lucide@latest"></script>
+
+
+
+<style>
+
+@import url('https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400;0,500;0,600;1,400&display=swap');
+
+
+body {
+
+font-family: 'Segoe UI', sans-serif;
+
+background-color: #1c1917;
+
+margin: 0;
+
+padding: 0;
+
+}
+
+h1, h2, .font-serif {
+
+font-family: 'Lora', serif;
+
+}
+
+
+/* Animations */
+
+.slide-enter { opacity: 0; transform: scale(1.1); }
+
+.slide-active { opacity: 1; transform: scale(1.0); }
+
+.text-enter { opacity: 0; transform: translateY(20px); filter: blur(5px); }
+
+
+.text-active { opacity: 1 !important; transform: translateY(0) !important; filter: blur(0) !important; }
+
+</style>
+
+</head>
+
+<body class="bg-stone-900 text-stone-200 min-h-screen overflow-x-hidden selection:bg-amber-500/30">
+
+
+
+<!-- Background -->
+
+<div class="fixed inset-0 pointer-events-none overflow-hidden z-0">
+
+<div class="absolute top-[-20%] left-[-10%] w-[50%] h-[50%] bg-amber-900/20 rounded-full blur-[120px]"></div>
+
+<div class="absolute bottom-[-20%] right-[-10%] w-[50%] h-[50%] bg-orange-900/20 rounded-full blur-[120px]"></div>
+
+</div>
+
+
+
+<div class="relative z-10 max-w-6xl mx-auto px-4 py-8 md:py-12 flex flex-col min-h-screen justify-center">
+
+
+<!-- Header -->
+
+<header class="text-center mb-8 md:mb-12 space-y-4">
+
+<div class="inline-flex items-center justify-center p-3 bg-amber-900/30 rounded-full mb-4 ring-1 ring-amber-500/30">
+
+<i data-lucide="leaf" class="text-amber-500 w-6 h-6"></i>
+
+</div>
+
+<h1 class="text-4xl md:text-6xl font-serif text-amber-100 tracking-tight">
+
+Passi d'Autunno
+
+</h1>
+
+<p class="text-lg md:text-xl text-amber-200/60 italic font-serif max-w-2xl mx-auto">
+
+Le foto di Padre Mario
+
+</p>
+
+</header>
+
+
+
+<!-- Main Card -->
+
+<main class="bg-black/40 backdrop-blur-md rounded-3xl overflow-hidden shadow-2xl border border-white/10">
+
+<div class="grid lg:grid-cols-[1.5fr,1fr]">
+
+
+<!-- Image Section -->
+
+<div class="relative h-[400px] lg:h-[600px] overflow-hidden group bg-black" id="image-container">
+
+<!-- Images Injected Here -->
+
+
+<!-- Mobile Nav -->
+
+<div class="absolute inset-0 flex items-center justify-between p-4 lg:hidden pointer-events-none z-20">
+
+<button onclick="prevSlide()" class="pointer-events-auto bg-black/20 hover:bg-black/40 backdrop-blur-md text-white p-3 rounded-full transition-all active:scale-95">
+
+<i data-lucide="chevron-left" class="w-6 h-6"></i>
+
+</button>
+
+<button onclick="nextSlide()" class="pointer-events-auto bg-black/20 hover:bg-black/40 backdrop-blur-md text-white p-3 rounded-full transition-all active:scale-95">
+
+<i data-lucide="chevron-right" class="w-6 h-6"></i>
+
+</button>
+
+</div>
+
+
+
+<!-- Mobile Title -->
+
+<div class="absolute bottom-0 left-0 right-0 p-6 lg:hidden z-20 bg-gradient-to-t from-black/90 to-transparent">
+
+<h2 id="mobile-title" class="text-2xl font-serif text-white font-bold drop-shadow-lg transition-all duration-500"></h2>
+
+</div>
+
+</div>
+
+
+
+<!-- Content Section -->
+
+<div class="relative p-8 lg:p-12 flex flex-col justify-between bg-stone-950/80 lg:bg-transparent">
+
+<div class="space-y-8">
+
+<div class="hidden lg:block overflow-hidden">
+
+<h2 id="desktop-title" class="text-4xl font-serif text-amber-100 mb-2 transition-all duration-700 translate-y-10 opacity-0"></h2>
+
+<div class="h-1 w-20 bg-amber-600/50 rounded-full mt-4"></div>
+
+</div>
+
+
+
+<div class="relative min-h-[200px]">
+
+<p id="slide-text" class="text-lg md:text-xl text-stone-300 leading-relaxed font-light transition-all duration-1000 opacity-0 translate-y-4 blur-sm"></p>
+
+<div class="mt-6 text-amber-500/50 text-sm font-serif italic">
+
+— Foto <span id="slide-counter">1</span> di <span id="total-slides">6</span>
+
+</div>
+
+</div>
+
+</div>
+
+
+
+<!-- Footer Controls -->
+
+<div class="mt-8 pt-8 border-t border-white/10 flex flex-col gap-6">
+
+<div class="flex gap-2 h-1.5" id="progress-container"></div>
+
+
+
+<div class="flex items-center justify-between">
+
+<div class="flex gap-3">
+
+<button onclick="prevSlide()" class="hidden lg:flex p-3 rounded-full border border-white/10 hover:bg-white/10 hover:border-amber-500/50 transition-all text-stone-400 hover:text-amber-100">
+
+<i data-lucide="chevron-left" class="w-6 h-6"></i>
+
+</button>
+
+
+<button onclick="toggleAutoPlay()" id="autoplay-btn" class="flex items-center gap-3 px-6 py-3 rounded-full border transition-all border-white/10 hover:bg-white/5 text-stone-300">
+
+<i data-lucide="play" class="w-5 h-5" id="play-icon"></i>
+
+<i data-lucide="pause" class="w-5 h-5 hidden" id="pause-icon"></i>
+
+<span class="uppercase tracking-wider text-sm font-medium" id="autoplay-text">Avvia</span>
+
+</button>
+
+
+<button onclick="nextSlide()" class="hidden lg:flex p-3 rounded-full border border-white/10 hover:bg-white/10 hover:border-amber-500/50 transition-all text-stone-400 hover:text-amber-100">
+
+<i data-lucide="chevron-right" class="w-6 h-6"></i>
+
+</button>
+
+</div>
+
+
+<div class="text-right text-xs text-stone-500 uppercase tracking-widest hidden sm:block">
+
+Padre Mario<br>Brescia
+
+</div>
+
+</div>
+
+</div>
+
+</div>
+
+</div>
+
+</main>
+
+</div>
+
+
+
+<script>
+
+// === CONFIGURAZIONE IMMAGINI ===
+
+// Qui usiamo i nomi esatti dei file che hai caricato: 01.png, 02.png, ecc.
+
+const slides = [
+
+{
+
+file: '01.jpg', // Foto del Bosco
+
+fallback: 'https://images.unsplash.com/photo-1441974231531-c6227db76b6e?auto=format&fit=crop&q=80&w=1200',
+
+title: 'Il Crepuscolo del Bosco',
+
+text: 'Tra gli alberi spogli, una luce timida filtra attraverso i rami. Il bosco si prepara al riposo, come un monaco in preghiera silenziosa. Padre Giuseppe cammina su questo sentiero ogni mattina, cercando Dio nelle piccole cose della natura.'
+
+},
+
+{
+
+file: '02.jpg', // Foto del Riccio
+
+fallback: 'https://images.unsplash.com/photo-1596826588221-540c6cd7141a?auto=format&fit=crop&q=80&w=1200',
+
+title: 'La Promessa della Vita',
+
+text: 'Un riccio di castagno e foglie gialle - simbolo perfetto della generosità del Creatore. Anche nella caduta, c\'è bellezza. Anche nella fine, c\'è promessa di nuovo inizio.'
+
+},
+
+{
+
+file: '03.jpg', // Foto Foglie Rosse
+
+fallback: 'https://images.unsplash.com/photo-1506618370722-2d0d5b81c519?auto=format&fit=crop&q=80&w=1200',
+
+title: 'Foglie d\'Oro',
+
+text: 'Le montagne si vestono di rame e oro. Nella nebbia che sale dalle valli, Padre Giuseppe vede il mistero della fede - non tutto è chiaro, ma tutto è presente. La nebbia non nasconde la montagna, la rivela gradualmente.'
+
+},
+
+{
+
+file: '04.jpg', // Foto Betulla
+
+fallback: 'https://images.unsplash.com/photo-1502472584811-0a2f2ca8f965?auto=format&fit=crop&q=80&w=1200',
+
+title: 'L\'Albero Solitario',
+
+text: 'Una betulla dorata si erge contro il cielo azzurro. Sola ma non isolata, circondata dalle sue sorelle spoglie. Come un missionario Saveriano, porta la sua luce anche quando tutto intorno sembra dormire.'
+
+},
+
+{
+
+file: '05.jpg', // Foto Controluce
+
+fallback: 'https://images.unsplash.com/photo-1470252649378-9c29740c9fa8?auto=format&fit=crop&q=80&w=1200',
+
+title: 'Verso la Luce',
+
+text: 'Una giovane pianta si protende verso il sole che trafigge le nuvole. "Crescete nella grazia", sussurra il vento. Padre Giuseppe sorride - anche questa pianticella conosce il cammino verso l\'alto.'
+
+},
+
+{
+
+file: '06.jpg', // Foto Montagna
+
+fallback: 'https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?auto=format&fit=crop&q=80&w=1200',
+
+title: 'La Montagna Nascosta',
+
+text: 'La vetta emerge dalla nebbia autunnale, misteriosa e maestosa. Così è la vita spirituale - momenti di chiarezza seguiti da momenti di nebbia. Ma la montagna rimane sempre là, solida, eterna, fedele.'
+
+}
+
+];
+
+
+
+let currentIndex = 0;
+
+let isAutoPlay = false;
+
+let autoPlayInterval;
+
+let textTimeout;
+
+
+
+const imageContainer = document.getElementById('image-container');
+
+const desktopTitle = document.getElementById('desktop-title');
+
+const mobileTitle = document.getElementById('mobile-title');
+
+const slideText = document.getElementById('slide-text');
+
+const progressContainer = document.getElementById('progress-container');
+
+const slideCounter = document.getElementById('slide-counter');
+
+const totalSlides = document.getElementById('total-slides');
+
+
+const btn = document.getElementById('autoplay-btn');
+
+const playIcon = document.getElementById('play-icon');
+
+const pauseIcon = document.getElementById('pause-icon');
+
+const btnText = document.getElementById('autoplay-text');
+
+
+
+function init() {
+
+totalSlides.textContent = slides.length;
+
+
+slides.forEach((slide, index) => {
+
+const imgDiv = document.createElement('div');
+
+imgDiv.className = `absolute inset-0 transition-all duration-1000 ease-in-out bg-black slide-enter opacity-0`;
+
+imgDiv.id = `slide-${index}`;
+
+
+const img = document.createElement('img');
+
+img.className = "w-full h-full object-cover opacity-90";
+
+img.alt = slide.title;
+
+img.src = slide.file;
+
+
+// Se l'immagine locale non si carica (es. percorso errato), usa quella di internet
+
+img.onerror = function() {
+
+console.log(`Immagine locale ${slide.file} non trovata, uso fallback.`);
+
+this.src = slide.fallback;
+
+this.onerror = null;
+
+};
+
+
+const gradient = document.createElement('div');
+
+gradient.className = "absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent lg:bg-gradient-to-r lg:from-transparent lg:to-black/60";
+
+
+
+imgDiv.appendChild(img);
+
+imgDiv.appendChild(gradient);
+
+imageContainer.appendChild(imgDiv);
+
+
+
+const bar = document.createElement('div');
+
+bar.className = `flex-1 rounded-full transition-all duration-500 bg-stone-800 cursor-pointer hover:bg-amber-900/80`;
+
+bar.id = `progress-${index}`;
+
+bar.onclick = () => goToSlide(index);
+
+progressContainer.appendChild(bar);
+
+});
+
+
+
+lucide.createIcons();
+
+updateSlide();
+
+}
+
+
+
+function updateSlide() {
+
+slides.forEach((_, index) => {
+
+const el = document.getElementById(`slide-${index}`);
+
+if (index === currentIndex) {
+
+el.classList.remove('opacity-0', 'scale-110', 'pointer-events-none');
+
+el.classList.add('opacity-100', 'scale-100');
+
+} else {
+
+el.classList.remove('opacity-100', 'scale-100');
+
+el.classList.add('opacity-0', 'scale-110', 'pointer-events-none');
+
+}
+
+});
+
+
+
+desktopTitle.classList.remove('translate-y-0', 'opacity-100');
+
+desktopTitle.classList.add('translate-y-10', 'opacity-0');
+
+slideText.classList.remove('text-active');
+
+slideText.classList.add('text-enter');
+
+mobileTitle.style.opacity = '0';
+
+
+
+clearTimeout(textTimeout);
+
+textTimeout = setTimeout(() => {
+
+const currentSlide = slides[currentIndex];
+
+desktopTitle.textContent = currentSlide.title;
+
+mobileTitle.textContent = currentSlide.title;
+
+slideText.textContent = currentSlide.text;
+
+slideCounter.textContent = currentIndex + 1;
+
+
+
+desktopTitle.classList.remove('translate-y-10', 'opacity-0');
+
+desktopTitle.classList.add('translate-y-0', 'opacity-100');
+
+slideText.classList.remove('text-enter');
+
+slideText.classList.add('text-active');
+
+mobileTitle.style.opacity = '1';
+
+}, 500);
+
+
+
+slides.forEach((_, index) => {
+
+const bar = document.getElementById(`progress-${index}`);
+
+if (index === currentIndex) {
+
+bar.className = 'flex-1 rounded-full transition-all duration-500 bg-amber-500';
+
+} else if (index < currentIndex) {
+
+bar.className = 'flex-1 rounded-full transition-all duration-500 bg-amber-900/60';
+
+} else {
+
+bar.className = 'flex-1 rounded-full transition-all duration-500 bg-stone-800 hover:bg-amber-900/80 cursor-pointer';
+
+}
+
+});
+
+}
+
+
+
+function nextSlide() {
+
+currentIndex = (currentIndex + 1) % slides.length;
+
+updateSlide();
+
+}
+
+
+
+function prevSlide() {
+
+currentIndex = (currentIndex - 1 + slides.length) % slides.length;
+
+updateSlide();
+
+}
+
+
+
+function goToSlide(index) {
+
+currentIndex = index;
+
+updateSlide();
+
+}
+
+
+
+function toggleAutoPlay() {
+
+isAutoPlay = !isAutoPlay;
+
+if (isAutoPlay) {
+
+btn.classList.add('bg-amber-900/30', 'border-amber-500/50', 'text-amber-200');
+
+btn.classList.remove('border-white/10', 'text-stone-300');
+
+playIcon.classList.add('hidden');
+
+pauseIcon.classList.remove('hidden');
+
+btnText.textContent = 'Pausa';
+
+autoPlayInterval = setInterval(nextSlide, 8000);
+
+} else {
+
+btn.classList.remove('bg-amber-900/30', 'border-amber-500/50', 'text-amber-200');
+
+btn.classList.add('border-white/10', 'text-stone-300');
+
+playIcon.classList.remove('hidden');
+
+pauseIcon.classList.add('hidden');
+
+btnText.textContent = 'Avvia';
+
+clearInterval(autoPlayInterval);
+
+}
+
+}
+
+
+
+let touchStartX = 0;
+
+let touchEndX = 0;
+
+imageContainer.addEventListener('touchstart', e => touchStartX = e.changedTouches[0].screenX);
+
+imageContainer.addEventListener('touchend', e => {
+
+touchEndX = e.changedTouches[0].screenX;
+
+if (touchEndX < touchStartX - 50) nextSlide();
+
+if (touchEndX > touchStartX + 50) prevSlide();
+
+});
+
+
+
+init();
+
+</script>
+
+</body>
+
+</html>
